@@ -10,7 +10,7 @@ import java.util.Calendar;
  *   1999 12.31  是星期五 -->离我们最近的 世纪末 （xx99.12.31) 哪个是星期日
  *
  */
-public class B2013_世纪末的星期日 {
+public class B2013_1世纪末的星期日 {
     public static void main(String[] args) {
         Calendar calendar= Calendar.getInstance();
         for (int i = 1999; i <10000 ; i=i+100) {
