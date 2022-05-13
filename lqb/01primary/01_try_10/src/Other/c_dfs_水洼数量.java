@@ -37,7 +37,7 @@ w.w.w.....w.
 public class c_dfs_水洼数量 {
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new  Scanner(System.in);
         int N = scanner.nextInt();
         int M = scanner.nextInt();
         scanner.nextLine();
