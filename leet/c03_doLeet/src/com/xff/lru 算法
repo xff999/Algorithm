@@ -1,0 +1,36 @@
+package com.xff.lru;
+
+
+//利用 LinkedHashMap 实现lru  最近最少使用的算法
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class LinkedHashMap_LRU<k,v> extends LinkedHashMap<k,v> {
+
+    //定义容量
+    private int capacity;
+    //构造方法
+    private LinkedHashMap_LRU(int capacity){
+        super(capacity,0.75F,true); //调用父类的构造 (注意里面的参数)
+        this.capacity=capacity;          //注意排序的 输出规则
+    }
+
+    @Override  //ctl + o 实现方法 删除最近未使用
+    protected boolean removeEldestEntry(Map.Entry<k, v> eldest) {
+        return super.size() >capacity; //当添加之后容量，大于初始容量，执行删除元素
+    }
+
+    public static void main(String[] args) {
+
+        LinkedHashMap_LRU lruDemo = new LinkedHashMap_LRU(3);
+        lruDemo.put(1,"a");
+        lruDemo.put(2,"b");
+        lruDemo.put(3,"c");
+        System.out.println(lruDemo.keySet()); // 只输出key 的集合
+        lruDemo.put(4,"d");
+        System.out.println(lruDemo.keySet());
+        lruDemo.put(2,"b");
+        System.out.println(lruDemo.keySet());
+    }
+}
