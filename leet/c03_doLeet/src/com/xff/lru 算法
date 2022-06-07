@@ -1,7 +1,8 @@
 package com.xff.lru;
 
 
-//利用 LinkedHashMap 实现lru  最近最少使用的算法
+//利用 LinkedHashMap 实现lru  最近最少使用的算法  
+
 
 import java.util.LinkedHashMap;
 import java.util.Map;
