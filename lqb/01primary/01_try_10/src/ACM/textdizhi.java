@@ -17,5 +17,6 @@ public class textdizhi {
         }else
             System.out.println("a1.equals(a2)==false");
 
+
     }
 }
