@@ -1,0 +1,128 @@
+package com.xff.lru;
+
+//参考 aqs 双向指针，
+ //map 负责查找， 构建虚拟的双向链表，里面存放node 节点，作为数据载体
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MyOwn_LRU {
+
+
+
+    //1.构造node节点,作为数据载体
+   class Node<K,V>{
+      K key;
+      V value;
+      Node<K,V> prev ; //前指针
+      Node<K,V> next ; //后指针
+             //构造方法
+      public Node(){
+          this.prev =this.next = null;  //无参构造， 初始化前后指针
+      }
+      public Node(K key,V value){
+          this.key=key;
+          this.value=value;
+          this.prev=this.next=null;
+      }
+    }
+   //2.构建虚拟的双向链表，里面存放 node 节点
+   class DoubleLinkedList<K,V>{
+       Node<K,V> head;//头节点
+       Node<K,V> tail; //尾节点
+       //2.1 双向链表 构造方法
+       public DoubleLinkedList(){
+           head = new Node<>();
+           tail = new Node<>();
+           head.next = tail;
+           tail.prev = head;
+        }
+       //2.2 添加节点到 头 后面
+       public void addHead(Node<K,V> node){
+           node.next =head.next ; //node 下一个指向尾
+           node.prev =head ;  //前指针指向头
+           head.next.prev = node; //尾节点 的头，指向node
+           head.next = node;  //连接添加
+        }
+      //2.3  删除一个节点
+      public void removeNode(Node<K,V> node){
+           node.next.prev =node.prev; //先改变 后面节点的指针
+           node.prev.next =node.next;
+           node.prev=null;
+           node.next=null;
+       }
+     //2.4 获得要 删除的最后 一个节点
+     public Node getLast(){
+           return tail.prev ; //尾节点的前一个
+     }
+   }
+
+    private int cacheSize ; //定义容量
+    Map<Integer,Node<Integer,Integer>> map ; //构造map 值 存储node 节点
+    DoubleLinkedList<Integer,Integer> doubleLinkedList; //构造双向链表，内容存integer
+
+    //构造方法
+    public MyOwn_LRU(int cacheSize){
+        this.cacheSize = cacheSize;
+        map = new HashMap<>(); //用来查找的，根据key
+        doubleLinkedList = new DoubleLinkedList<>(); //双向链表 是用来存放 node 节点的
+    }
+
+    //获取 这个 key 的节点 （读取使用）
+    public int get(int key){
+        if(!map.containsKey(key)){
+            return -1;
+        }
+       //又再次的使用
+        Node<Integer, Integer> node = map.get(key);
+        //把他删除， 在重新加入在头 部分
+        doubleLinkedList.removeNode(node);
+        doubleLinkedList.addHead(node);
+       return node.value; //返回这个节点的值
+     }
+
+     //存放节点 进入队列 (输入的是 k v 要封装为 node 节点)
+    public void put(int key,int value){
+        if(map.containsKey(key)){ //(判断是否已经存在）
+            Node<Integer, Integer> node = map.get(key); //已经存在，更新节点的值
+            node.value=value;
+            map.put(key,node);// 重新存入
+            doubleLinkedList.removeNode(node);
+            doubleLinkedList.addHead(node);
+        }else{
+            if(map.size()==cacheSize){ //容量已经满了
+                Node lastNode = doubleLinkedList.getLast();
+                map.remove(lastNode.key); //删除key 值
+                doubleLinkedList.removeNode(lastNode); //删除最后一个节点
+            }
+            //存放进入节点
+          Node<Integer,Integer>  newNode = new Node<>(key,value);
+           map.put(key,newNode);
+           doubleLinkedList.addHead(newNode);
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        MyOwn_LRU lru =new MyOwn_LRU(3);
+        lru.put(1,1);
+        lru.put(2,2);
+        lru.put(3,3);
+        System.out.println(lru.map.keySet());
+        lru.put(4,4);
+        System.out.println(lru.map.keySet());
+        lru.put(4,1);
+        System.out.println(lru.map.keySet());
+        System.out.println();
+        lru.put(3,4);
+        System.out.println(lru.map.keySet());
+        lru.put(5,5);
+        System.out.println(lru.map.keySet());
+        lru.put(6,6);
+        System.out.println(lru.map.keySet());
+
+
+    }
+
+}
