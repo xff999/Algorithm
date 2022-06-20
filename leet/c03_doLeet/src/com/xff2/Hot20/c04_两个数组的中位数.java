@@ -1,4 +1,4 @@
-package com.xff2.Hot10;
+package com.xff2.Hot20;
 
 /**
  * @author xff

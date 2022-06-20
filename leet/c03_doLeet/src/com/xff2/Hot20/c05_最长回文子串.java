@@ -1,4 +1,4 @@
-package com.xff2.Hot10;
+package com.xff2.Hot20;
 /**
  * @author xff
  * @createTime 2022/6/9 19:58
@@ -59,17 +59,17 @@ public class c05_最长回文子串 {
      * @author xff
      * @createTime 2022/6/9 20:43
      *
-     *   回文必然是 对称的  使用 扩张中心，循环判断
-     *      奇数， 从元素上扩展    n 次
-     *      偶数  从元素之间的位置开始   n-1次
+     *   回文必然是 对称的  使用 扩张中心，循环判断 （两种方式）
+     *       从元素上扩展    n 次
+     *       从元素之间的位置开始   n-1次
      *
      */
     public static String longestPalindrome(String s) {  //静态方法，不能调用非静态
         if (s == null || s.length() < 1) return "";
         int start = 0, end = 0;
         for (int i = 0; i < s.length(); i++) {
-            int len1 = expandAroundCenter(s, i, i);
-            int len2 = expandAroundCenter(s, i, i + 1);
+            int len1 = expandAroundCenter(s, i, i); //以本身元素位置
+            int len2 = expandAroundCenter(s, i, i + 1);  //以两元素位置中间
             int len = Math.max(len1, len2);
             if (len > end - start) {
                 start = i - (len - 1) / 2;
