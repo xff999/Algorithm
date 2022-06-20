@@ -23,7 +23,7 @@ import java.util.HashMap;
 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
  */
 
-public class c03_无重复字符的最长子串 {
+public class c03_无重复字符的最长子串  {
     public static void main(String[] args) {
        String s = "abcabcbb";
         System.out.println(lengthOfLongestSubstring(s));
