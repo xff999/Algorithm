@@ -10,7 +10,7 @@ package com.xff2.Hot20;
  * 输出：2.00000
  * 解释：合并数组 = [1,2,3] ，中位数 2
  */
-public class c04_两个数组的中位数 {
+public class c04_两个数组的中位数  {
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
        int n1 = nums1.length;
        int n2 = nums2.length;
