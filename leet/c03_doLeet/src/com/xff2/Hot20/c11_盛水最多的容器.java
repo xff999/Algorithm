@@ -1,6 +1,4 @@
-package com.xff2.Hot10;
-
-import java.util.Map;
+package com.xff2.Hot20;
 
 /**
  * @author xff
