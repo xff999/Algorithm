@@ -1,4 +1,4 @@
-package com.xff2.Hot10;
+package com.xff2.Hot20;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,47 +35,53 @@ import java.util.List;
   *
   *
   */
+ // 注意 i++ 和 ++i  ，处理特殊情况，要在减少前
 
 public class c15_三数之和 {
 
     public static void main(String[] args) {
 
-        int [] nums = {-1,0,1,2,-1,-4};
-        //int [] nums = {};
+        //int [] nums = {-1,0,1,2,-1,-4};
+        int [] nums = null;
         System.out.println(threeSum(nums));
     }
 
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> lists = new ArrayList<>();
-        //排序
-        Arrays.sort(nums);
-        int len = nums.length;  //元素的长度
-        for(int i = 0;i < len;++i) {
-            if(nums[i] > 0) return lists;
+         Arrays.sort(nums); //排序数组
+        int len = nums.length;
+        //遍历每个元素 ，在元素内部处理
+        for (int i = 0; i < len ; ++i) {
+            if(nums[i]> 0) return lists; //第一个都等于0 直接返回
+            if(i>0 && nums[i]==nums[i-1]) continue; //当前和前面相同，跳过避免重复
 
-            if(i > 0 && nums[i] == nums[i-1]) continue;
+            int cur = nums[i]; //定义当前值
+            int l=i+1; //下一个
+            int r=len-1; //第三个，从后面循环
+            while (l<r){
+                //判断是否能得到结果
+                int temp =cur+nums[l]+nums[r];
+                if(temp ==0){
+                    //创建集合放入数字
+                    List list = new ArrayList();
+                    list.add(cur);
+                    list.add(nums[l]);
+                    list.add(nums[r]);
+                    lists.add(list); //放入结果集
+                   //移动双指标
+                    //处理特殊的相同情况   处理特殊情况，要在减少前
+                    while(l < r && nums[l+1] == nums[l]) ++l; //取消重复的元素
+                    while (l < r && nums[r-1] == nums[r]) --r;  //条件移动
+                    ++l;
+                    --r;
 
-            int curr = nums[i];   //当前的位置
-            int L = i+1; //第二个元素，当前的后一个，向后跳转
-            int R = len-1; //第三个元素， 最后一个向前
-            while (L < R) { //结束条件
-                int tmp = curr + nums[L] + nums[R];
-                if(tmp == 0) {
-                    List<Integer> list = new ArrayList<>();
-                    list.add(curr);
-                    list.add(nums[L]);
-                    list.add(nums[R]);
-                    lists.add(list);
-                    while(L < R && nums[L+1] == nums[L]) ++L;
-                    while (L < R && nums[R-1] == nums[R]) --R;
-                     ++L;
-                     --R;
-                } else if(tmp < 0) {
-                    ++L;
+                } else if(temp <0){ //左边的取数 较小
+                    ++l;
                 } else {
-                    --R;
+                    --r;
                 }
             }
+
         }
         return lists;
     }
